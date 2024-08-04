@@ -1,0 +1,118 @@
+.month-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.month-control {
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.month-control-item {
+    width: 200px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    text-transform: uppercase;
+}
+
+.month-control-item:hover {
+    scale: 1.2;
+}
+
+.calendar-grid {
+    padding: 10px;
+    display: grid;
+    width: 50%;
+    height: 70%;
+    border: 1px solid #fff;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    grid-gap: 3px;
+    border-radius: 10px;
+}
+
+.calendar-item {
+    align-content: center;
+    text-align: center;
+    border: 1px solid #fff;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.calendar-item:hover:not(.week-day-name, .current-calendar-item) {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.current-calendar-item {
+    cursor: pointer;
+    background-color: rgba(10, 245, 253, 0.2);
+}
+
+.week-day-name {
+    background-color: rgba(219, 252, 147, 0.7);
+    pointer-events: none;
+}
+
+.text-field {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-weight: 400;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    position: absolute;
+}
+
+.text-field-container {
+    position: relative;
+    width: 200px;
+    height: 50px;
+}
+
+.plus-icon {
+    position: absolute;
+    width: 25px;
+    height: 18px;
+    top: 5px;
+    right: 5px;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.minus-icon {
+    position: absolute;
+    width: 25px;
+    height: 18px;
+    bottom: 5px;
+    right: 5px;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.minus-icon:hover {
+    background-color: rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+.plus-icon:hover {
+    background-color: rgba(0,0,0,0.2);
+    cursor: pointer;
+}

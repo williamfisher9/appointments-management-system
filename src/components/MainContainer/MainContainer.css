@@ -1,0 +1,7 @@
+.main-container {
+    position: absolute;
+    width: calc(100svw - 80px);
+    height: 100%;
+    top: 0;
+    left: 80px;
+}

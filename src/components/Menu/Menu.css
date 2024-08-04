@@ -1,0 +1,160 @@
+.menu {
+    position: fixed;
+    width: 75px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 9999;
+}
+
+.menu-inner-frame {
+    width: 100%;
+    height: calc(100svh - 110px);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.menu:hover {
+    width: 200px;
+
+    .logo-title {
+        display: block;
+    }
+}
+
+.logo {
+    width: 100%;
+    height: 70px;
+    padding: 10px 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.logo-img {
+    width: 65px;
+    height: 40px;
+    background: url("../../assets/icon.svg") center/contain no-repeat;
+}
+
+.logo-title {
+    display: none;
+    width: 90px;
+    height: 60px;
+    background: url("../../assets/title.svg") center/contain no-repeat;
+}
+
+.menu-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.menu-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 15px 0;
+    
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 200;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.menu-item-icon {
+    transition: 0.2s;
+}
+
+.menu-item-desc {
+    display: none;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.menu:hover .menu-item {
+    justify-content: start;
+}
+
+.menu:hover .menu-item {
+    padding-left: 25px;
+}
+
+.menu:hover .menu-item-desc {
+    display: block;
+}
+
+
+.menu-light-theme {
+    background-color: #000;
+}
+
+.menu-dark-theme {
+    background-color: #d6ccc2;
+}
+
+.light-font {
+    color: #000;
+}
+
+.dark-font {
+    color: #fff;
+}
+
+.menu-dark-theme > .menu-inner-frame > .menu-section > .menu-item:hover {
+    background-color: rgba(0 , 0, 0, 0.4);
+    
+    .dark-font {
+        color: yellow;
+    }
+
+    .light-font {
+        color: yellow;
+    }
+
+    .menu-item-desc {
+        scale: 1.1;
+    }
+
+    .menu-item-icon {
+        scale: 1.1;
+    }
+}
+
+.menu-light-theme > .menu-inner-frame > .menu-section > .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    
+    .dark-font {
+        color: yellow;
+    }
+
+    .light-font {
+        color: yellow;
+    }
+
+    .menu-item-desc {
+        scale: 1.1;
+    }
+
+    .menu-item-icon {
+        scale: 1.1;
+    }
+    
+}

@@ -1,0 +1,58 @@
+.modal-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-box {
+    width: 600px;
+    height: 600px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.9);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 20px;
+}
+
+.agenda-item-control:not([type = 'button']) {
+    width: 300px;
+    height: 100px;
+}
+
+.agenda-item-control[type = 'text'] {
+    width: 300px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.agenda-item-control[type = 'button'] {
+    width: 150px;
+    height: 50px;
+    background-color: cadetblue;
+    border: none;
+    outline: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.agenda-item-control[type = 'button']:active {
+    box-shadow: 2px 2px 10px #fff, -2px -2px 10px #fff;
+}
+
+.agenda-item-control[type = 'text']:disabled {
+    background-color: #f6f6f6;
+}
