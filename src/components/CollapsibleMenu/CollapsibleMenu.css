@@ -1,0 +1,37 @@
+.collapsible-menu {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    z-index: 9999;
+    top: 60px;
+    left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.collapsible-menu-item {
+    padding: 15px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+}
+
+.collapsible-menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+@media only screen and (min-width: 550px) {
+    .collapsible-menu {
+        display: none;
+    }
+}
+
+.hide-collapsible-menu {
+    display: none;
+}

@@ -24,6 +24,12 @@
 }
 
 .social-media-icon:hover {
-    color: rgb(255, 255, 0);
-    scale: 1.1;
+    scale: 1.3;
+}
+
+
+@media only screen and (max-width: 550px) {
+    .social-media-menu {
+        display: none;
+    }
 }

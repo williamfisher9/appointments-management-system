@@ -29,12 +29,12 @@
 
 /* Handle */
 .week-grid::-webkit-scrollbar-thumb {
-    background: rgb(58, 151, 154);
+    background: rgba(58, 151, 154, 0.5);
 }
 
 /* Handle on hover */
 .week-grid::-webkit-scrollbar-thumb:hover {
-    background: rgb(0, 113, 161);
+    background: rgba(58, 151, 154, 1);
     cursor: grab;
 }
 

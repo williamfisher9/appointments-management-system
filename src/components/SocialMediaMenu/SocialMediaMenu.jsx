@@ -14,7 +14,7 @@ function SocialMediaMenu() {
   };
 
   let getElementClasses = (classes) => {
-    return `${classes} ${theme === 'dark' ? "light-font" : "dark-font"}`
+    return `${classes} ${theme === "dark" ? "dark-theme-font" : "light-theme-font"}`
   }
 
   return (

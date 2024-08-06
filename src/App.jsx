@@ -19,7 +19,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
-              {/*<Route index element={<Menu />} />*/}
+              <Route index element={<Month />} />
               <Route path="month" element={<Month />} />
               <Route path="week" element={<Week />} />
               <Route path="agenda" element={<Agenda />} />

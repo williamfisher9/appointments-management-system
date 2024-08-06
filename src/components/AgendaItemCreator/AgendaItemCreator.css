@@ -50,7 +50,7 @@
 }
 
 .agenda-item-control[type = 'button']:active {
-    box-shadow: 2px 2px 10px #fff, -2px -2px 10px #fff;
+    box-shadow: 2px 2px 15px #fff, -2px -2px 15px #fff;
 }
 
 .agenda-item-control[type = 'text']:disabled {

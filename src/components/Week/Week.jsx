@@ -29,6 +29,7 @@ let buildWeekCalendar = (firstDate, lastDate) => {
   val.push(
     <div className="week-grid-item week-grid-day-name" key={getNewUUID()}></div>
   );
+  
   val.push(
     <div className="week-grid-item week-grid-day-name" key={getNewUUID()}>
       {`${weekDays[0]}`}
