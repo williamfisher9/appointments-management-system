@@ -61,13 +61,13 @@ function Menu() {
             </Link>
 
             <Link className={getClassName('menu-item')} to="/week">
-              <i className={getClassName('menu-item-icon fa-solid fa-calendar-week')}></i>
+              <i className={getClassName('menu-item-icon fa-regular fa-clock')}></i>
               <span className={getClassName('menu-item-desc')}>Week</span>
             </Link>
 
             <Link className={getClassName('menu-item')} to="/agenda">
-              <i className={getClassName('menu-item-icon fa-regular fa-calendar-plus')}></i>
-              <span className={getClassName('menu-item-desc')}>Agenda</span>
+            <i className={getClassName('menu-item-icon fa-regular fa-calendar-check')}></i>
+              <span className={getClassName('menu-item-desc')}>Tabular</span>
             </Link>
         
 
