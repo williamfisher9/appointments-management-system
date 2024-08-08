@@ -22,7 +22,6 @@ let buildWeekCalendar = (firstDate, lastDate) => {
       });
   }
 
-  console.log(getNewUUID());
 
   let val = [];
 
@@ -124,8 +123,6 @@ function Week() {
     setFirstDate(newFirstDate.toLocaleDateString('en-US', options));
     setLastDate(newLastDate.toLocaleDateString('en-US', options));
 
-    console.log(`new first ${firstDate}`);
-    console.log(`new last ${lastDate}`);
   }, []);
 
   let handlePreviousWeek = () => {

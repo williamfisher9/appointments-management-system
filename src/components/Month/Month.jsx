@@ -4,9 +4,19 @@ import AgendaItemCreator from "../AgendaItemCreator/AgendaItemCreator";
 import MonthSelector from "../MonthSelector/MonthSelector";
 
 import { useTheme } from "../ThemeContext/ThemeContext";
+import { useSettingsContext } from "../SettingsContext/SettingsContext";
 
 function Month() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
+
+  let [monthState, setMonthState] = useState({sessions: [], day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear(), 
+    showModal: false, selectedDate: new Date().toLocaleDateString(), showMonthSelector: false, selectedSession: ''});
+
+    useEffect(() => {
+      setMonthState({...monthState, sessions: getAvailableSessions(new Date())})
+    }, []);
+
+  let {settings} = useSettingsContext();
 
   let date = new Date();
 
@@ -31,29 +41,74 @@ function Month() {
     "December",
   ];
 
-  let [day, setDay] = useState(0);
-  let [month, setMonth] = useState(0);
-  let [year, setYear] = useState(date.getFullYear());
-  let [showModal, setShowModal] = useState(false);
-
-  let [showMonthSelector, setShowMonthSelector] = useState(false);
-
   useEffect(() => {
-    setMonth(date.getMonth());
-  }, []);
+  }, [monthState])
+
 
   let handleMonthItemClick = (val) => {
-    setShowModal(true);
-    setDay(val);
+    setMonthState({...monthState, day: val, selectedDate: new Date(monthState.year, monthState.month, val).toLocaleDateString(), sessions: getAvailableSessions(new Date(monthState.year, monthState.month, val))});
   };
 
   let hideModal = () => {
-    setShowModal(false);
+    setMonthState({...monthState, showModal: false, sessions: getAvailableSessions(new Date(monthState.year, monthState.month, monthState.day))});
   };
 
   let hideMonthSelector = () => {
-    setShowMonthSelector(false);
+    setMonthState({...monthState, showMonthSelector: false})
   };
+
+  let getAvailableSessions = (dateVal) => {
+
+    let val = [];
+    let i = 0;
+
+    const lastSession = parseInt(settings.lastSession);
+
+    let startTimeInMinutes = parseInt(settings.from.split(':')[0])*60 + parseInt(settings.from.split(':')[1]);
+    let endTimeInMinutes = parseInt(settings.to.split(':')[0])*60 + parseInt(settings.to.split(':')[1]);
+
+    
+
+    if(settings.duration === "1"){
+      if(lastSession === 1) {
+        while(startTimeInMinutes <= endTimeInMinutes) {    
+          let hourVal = `${parseInt(startTimeInMinutes/60).toString().padStart(2,'0')}:${(startTimeInMinutes%60).toString().padStart(2,'0')}`;  
+          val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} 
+          
+          key={i++} className="session-item">{hourVal}</span>);
+          startTimeInMinutes += 60;
+        }
+      } else {
+        while(startTimeInMinutes < endTimeInMinutes) {
+          let hourVal = `${parseInt(startTimeInMinutes/60).toString().padStart(2,'0')}:${(startTimeInMinutes%60).toString().padStart(2,'0')}`;
+          val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+          startTimeInMinutes += 60;
+        }
+      }
+    }
+
+    if(settings.duration === "2"){
+      if(lastSession === 1) {
+        while(startTimeInMinutes <= endTimeInMinutes) {
+          let hourVal = `${parseInt(startTimeInMinutes/60).toString().padStart(2,'0')}:${(startTimeInMinutes%60).toString().padStart(2,'0')}`;
+          val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+          startTimeInMinutes += 30;
+        }
+      } else {
+        while(startTimeInMinutes < endTimeInMinutes) {
+          let hourVal = `${parseInt(startTimeInMinutes/60).toString().padStart(2,'0')}:${(startTimeInMinutes%60).toString().padStart(2,'0')}`;
+          val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+          startTimeInMinutes += 30;
+        }
+      }
+    }
+
+    return val;
+  }
+
+  let handleBookSessionClick = (hour, dateVal) => {
+    setMonthState({...monthState, selectedDate: dateVal.toLocaleDateString(), showModal: true, selectedSession: hour, day: dateVal.getDate()});
+  }
 
   let buildCalendarItems = () => {
     let values = [];
@@ -98,9 +153,9 @@ function Month() {
     );
 
     // returns the day number for the first day of the month
-    let firstDayOfTheMonth = firstDayOfMonth(month, year);
+    let firstDayOfTheMonth = firstDayOfMonth(monthState.month, monthState.year);
 
-    let numberOfDaysInPreviousMonth = numberOfDaysInMonth(month, year);
+    let numberOfDaysInPreviousMonth = numberOfDaysInMonth(monthState.month, monthState.year);
     
     let nextMonthDates = 1;
 
@@ -110,14 +165,34 @@ function Month() {
       i++
     ) {
       if (i < 1) {
-        values.push(<div
+        values.push(
+        <div
             className={`disabled-calendar-item`}
             key={keyVal++}
           >
             {numberOfDaysInPreviousMonth + i}
-        </div>);
+        </div>
+        );
         
-      } else if (i > numberOfDaysInMonth(month + 1, year)){
+      } else if (i > numberOfDaysInMonth(monthState.month + 1, monthState.year)){
+
+        values.push(<div
+            className={`disabled-calendar-item`}
+            key={keyVal++}
+          >
+            {nextMonthDates++}
+            </div>);
+
+      } else if (new Date(monthState.year, monthState.month, i+1) < new Date()){
+
+        values.push(<div
+            className={`disabled-calendar-item`}
+            key={keyVal++}
+          >
+            {nextMonthDates++}
+            </div>);
+
+      } else if (new Date(monthState.year, monthState.month, i+1).getDay() === 0 || new Date(monthState.year, monthState.month, i+1).getDay() === 1){
 
         values.push(<div
             className={`disabled-calendar-item`}
@@ -130,16 +205,12 @@ function Month() {
       else {
         values.push(
           <div
-            className={`calendar-item ${
-              date.toLocaleDateString("en-US", options) ===
-              `${month + 1}/${i}/${year}`
-                ? "current-calendar-item"
-                : null
-            }`}
+            className={`calendar-item ${monthState.selectedDate === new Date(monthState.year, monthState.month, i).toLocaleDateString() ? 'current-calendar-item' : null}`}
             key={keyVal++}
             onClick={() => handleMonthItemClick(i)}
             style={theme === 'dark' ? {border: "1px solid #fff", color: "#fff"} : {border: "1px solid #000", color:"#000"}}
           >
+              {date.toLocaleDateString("en-US", options) === `${monthState.month + 1}/${i}/${monthState.year}` ? <><span style={{fontSize: "13px", fontWeight: "500"}}>Today</span><br /></> : null}
             {i}
           </div>
         );
@@ -153,49 +224,54 @@ function Month() {
     return new Date(year, month, 1).getDay();
   };
 
+
   let numberOfDaysInMonth = (month, year) => {
     return new Date(year, month, 0).getDate();
   };
 
   let handlePlus = () => {
-    if (month == 11) {
-      setMonth(0);
-      setYear(++year);
+    if (monthState.month == 11) {
+      setMonthState({...monthState, month: 0, year: ++monthState.year})
     } else {
-      setMonth(++month);
+      setMonthState({...monthState, month: ++monthState.month})
     }
   };
 
   let handleMinus = () => {
-    if (month == 0) {
-      setMonth(11);
-      setYear(--year);
+    if (monthState.month == 0) {
+      setMonthState({...monthState, month: 11, year: --monthState.year})
     } else {
-      setMonth(--month);
+      setMonthState({...monthState, month: --monthState.month})
     }
   };
 
   let handleYearTextChange = (event) => {
-    setYear(event.target.value);
-    console.log(event.target.value);
+    setMonthState({...monthState, year: event.target.value})
   };
 
   let handleShowMonthSelector = () => {
-    setShowMonthSelector(true);
+    setMonthState({...monthState, showMonthSelector: true})
   };
 
   let setMonthValue = (val) => {
-    setMonth(val);
-    setShowMonthSelector(false);
+    setMonthState({...monthState, showMonthSelector: false, month: val})
   };
 
   let handlePlusYearIcon = () => {
-    setYear(++year);
+    setMonthState({...monthState, year: ++monthState.year})
   };
 
   let handleMinusYearIcon = () => {
-    setYear(--year);
+    setMonthState({...monthState, year: --monthState.year})
   };
+
+  let handleJumpToTodayClick = () => {
+    setMonthState({...monthState, year: new Date().getFullYear(), 
+      month: new Date().getMonth(), 
+      day: new Date().getDate(), 
+      selectedDate: new Date().toLocaleDateString(),
+      sessions: getAvailableSessions(new Date())})
+  }
 
   return (
     <div className="month-container">
@@ -203,7 +279,7 @@ function Month() {
         <input
           className="text-field"
           type="text"
-          value={year}
+          value={monthState.year}
           onChange={handleYearTextChange}
           style={theme === 'dark' ? {WebkitTextStrokeColor: "#fff"} : {WebkitTextStrokeColor: "#000"}}
         />
@@ -220,25 +296,50 @@ function Month() {
           <i className="fa-solid fa-chevron-left"></i>
         </div>
         <div className="month-control-item" onClick={handleShowMonthSelector}>
-          {months[month]}
+          {months[monthState.month]}
         </div>
         <div className="month-control-item" onClick={handlePlus}>
           <i className="fa-solid fa-chevron-right"></i>
         </div>
+      </div>     
+      
+      <div className="grid-components">
+      <div className="calendar-grid" style={theme === 'dark' ? {border: "1px solid #fff", color: "#fff"} : {border: "1px solid #000", color:"#000"}}>
+        {buildCalendarItems()}
       </div>
-      <div className="calendar-grid" style={theme === 'dark' ? {border: "1px solid #fff", color: "#fff"} : {border: "1px solid #000", color:"#000"}}>{buildCalendarItems()}</div>
-      {showModal ? (
+
+      <div className="sessions-grid" style={theme === 'dark' ? {border: "1px solid #fff", color: "#fff"} : {border: "1px solid #000", color:"#000"}}>
+      <span className="selected-date-field selected-date-text-field" style={theme === 'dark' ? {color: "#fff"} : {color:"#000"}}>
+          AVAILABLE SESSIONS <span style={{color: "rgba(238, 171, 0, 1)", fontWeight: "600", textDecoration: "underline"}}>{
+            
+            `${monthState.selectedDate.split("/")[0].padStart(2, '0')}/${monthState.selectedDate.split("/")[1].padStart(2, '0')}/${monthState.selectedDate.split("/")[2]}`
+            
+            }</span>
+          <input onClick={handleJumpToTodayClick} type="button" value={"Today"} style={{width: "70px", 
+            height: "35px", 
+            marginLeft: "10px", 
+            backgroundColor: "rgba(0, 107, 110, 1)", 
+            border: "none", color: "#fff",
+            outline: "none", borderRadius: "5px", cursor: "pointer", fontWeight: "600"}} />
+        </span>
+        {monthState.sessions}
+      </div>
+      </div>
+
+
+      {monthState.showModal ? (
         <AgendaItemCreator
-          showModal={showModal}
+          showModal={monthState.showModal}
           hideModal={hideModal}
-          dateValue={`${month + 1}/${day}/${year}`}
+          dateValue={monthState.selectedDate}
+          hourValue={monthState.selectedSession}
           disabled={true}
         />
       ) : null}
 
-      {showMonthSelector ? (
+      {monthState.showMonthSelector ? (
         <MonthSelector
-          showMonthSelector={showMonthSelector}
+          showMonthSelector={monthState.showMonthSelector}
           hideMonthSelector={hideMonthSelector}
           setMonthValue={setMonthValue}
         />

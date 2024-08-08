@@ -120,7 +120,7 @@
 }
 
 .menu-dark-theme > .menu-inner-frame > .menu-section > .menu-item:hover {
-    background-color: rgba(0 , 0, 0, 0.4);
+    background-color: rgba(238, 171, 0, 0.2);
 
     .menu-item-desc {
         scale: 1.1;

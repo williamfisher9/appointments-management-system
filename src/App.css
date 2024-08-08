@@ -11,6 +11,14 @@
 }
 
 .dark-theme {
-  
   background-color: #333;
+}
+
+
+:root {
+  --bodyColor: #333;
+}
+
+body {
+  background-color: var(--bodyColor);
 }

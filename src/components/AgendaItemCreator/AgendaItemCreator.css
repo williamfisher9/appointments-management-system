@@ -27,12 +27,12 @@
 }
 
 .agenda-item-control:not([type = 'button']) {
-    width: 300px;
+    width: 400px;
     height: 100px;
 }
 
 .agenda-item-control[type = 'text'] {
-    width: 300px;
+    width: 400px;
     height: 50px;
     text-align: center;
     font-size: 1.3rem;

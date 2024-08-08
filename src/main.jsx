@@ -3,16 +3,16 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { ThemeProvider } from "./components/ThemeContext/ThemeContext.jsx";
-import { TaskProvider } from "./components/TasksContext/TasksContext.jsx";
 import { SettingsContextProvider } from "./components/SettingsContext/SettingsContext.jsx";
+import { AppointmentsProvider } from "./components/AppointmentsContext/AppointmentsContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <SettingsContextProvider>
     <ThemeProvider>
-      <TaskProvider>
+      <AppointmentsProvider>
       <App />
-      </TaskProvider>
+      </AppointmentsProvider>
     </ThemeProvider>
     </SettingsContextProvider>
   </React.StrictMode>

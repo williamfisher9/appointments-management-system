@@ -8,7 +8,6 @@ function MonthSelector(props) {
     }
 
     let setMonthValue = (val) => {
-        console.log("clicked")
         props.setMonthValue(val);
     }
 

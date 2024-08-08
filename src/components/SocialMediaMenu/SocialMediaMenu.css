@@ -1,7 +1,7 @@
 .social-media-menu {
     width: 65px;
     height: 250px;
-    position: absolute;
+    position: fixed;
     top: 50%;
     right: 0;
     transform: translateY(-50%);

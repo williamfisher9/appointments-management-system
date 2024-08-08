@@ -8,14 +8,21 @@ import Settings from "./components/Settings/Settings";
 import Week from "./components/Week/Week";
 import NoPage from "./components/NoPage/NoPage";
 import { useTheme } from "./components/ThemeContext/ThemeContext";
+import setBodyColor from './components/Utils/Utils'
 
 
 function App() {
 
   const { theme } = useTheme();
+
+  if(theme === 'dark'){
+    setBodyColor({color: "#333"})
+  } else {
+    setBodyColor({color: "#edede9"})
+  }
   
   return (
-      <div className={theme === 'dark' ? 'app-container dark-theme' : 'app-container light-theme'}>
+      <div className='app-container '>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>

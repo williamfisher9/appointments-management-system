@@ -1,9 +1,11 @@
 import { useSettingsContext } from '../SettingsContext/SettingsContext';
+import { useTheme } from '../ThemeContext/ThemeContext';
 import './Settings.css';
 
 function Settings(){
     let {settings, setSettings} = useSettingsContext();
-    console.log(settings)
+    
+    let {theme} = useTheme();
 
 
 
@@ -23,7 +25,16 @@ function Settings(){
         setSettings({...settings, to: event.target.value})
     }
 
-    return <div className="settings-container">
+    let handleBookingsCountFieldChange = (event) => {
+        setSettings({...settings, bookingsCount: event.target.value})
+    }
+
+
+    let handleLastSessionChange = (val) => {
+        setSettings({...settings, lastSession: val})
+    }
+
+    return <div className="settings-container" style={{color: theme === 'dark' ? '#fff' : '#000'}}>
         
         <div className='page-header'>
             <i className='page-header-icon fa-solid fa-gear fa-spin-pulse'></i>
@@ -43,12 +54,8 @@ function Settings(){
                     <input type="radio" id="half" name="duration" value="2" checked={settings.duration === "2" ? true : false} onChange={() => handleDurationChange('2')}/>
                     <label htmlFor="half">30 Minutes</label>
                 </div>
-
-                <div className='fieldset-item'>
-                    <input type="radio" id="quarterly" name="duration" value="3" checked={settings.duration === "3" ? true : false} onChange={() => handleDurationChange('3')}/>
-                    <label htmlFor="quarterly">15 Minutes</label>
-                </div>
             </fieldset>
+            
 
             <fieldset className='fieldsets'>
                 <legend>Work Hours</legend>
@@ -61,6 +68,15 @@ function Settings(){
                 <div className='fieldset-item'>
                     <label className="fieldset-item-label" htmlFor="to">To</label>
                     <input className="fieldset-item-input" type="text" id="to" name="to" value={settings.to}  onChange={handleToFieldChange}/>
+                </div>
+            </fieldset>
+
+            <fieldset className='fieldsets'>
+                <legend>Bookings/Session</legend>
+
+                <div className='fieldset-item'>
+                    <label className="fieldset-item-label" htmlFor="bookinsPerSession">Bookings Per Session</label>
+                    <input className="fieldset-item-input" type="text" id="bookinsPerSession" name="bookinsPerSession" value={settings.bookingsCount} onChange={handleBookingsCountFieldChange}/>
                 </div>
             </fieldset>
 
@@ -94,6 +110,23 @@ function Settings(){
 
                 
             </fieldset>
+
+            <fieldset className='fieldsets'>
+                <legend>Book Last Session at End of Work Day</legend>
+
+                <div className='fieldset-item'>
+                    
+                    <input type="radio" id="lastSession1" name="lastSession" value="1" checked={settings.lastSession === "1" ? true : false} onChange={() => handleLastSessionChange('1')}/>
+                    <label className="fieldset-item-label" htmlFor="lastSession1">Yes</label>
+                    
+                </div>
+
+                <div className='fieldset-item'>
+                <input type="radio" id="lastSession2" name="lastSession" value="2" checked={settings.lastSession === "2" ? true : false} onChange={() => handleLastSessionChange('2')}/>
+                <label className="fieldset-item-label" htmlFor="lastSession2">No</label>
+                </div>
+            </fieldset>
+
         </div>
     </div>
 }
