@@ -4,18 +4,14 @@
     height: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.4);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: transparent;
 }
 
 .modal-box {
-    width: 600px;
-    height: 600px;
+    width: 500px;
+    height: 500px;
     border-radius: 20px;
-    background-color: rgba(0, 0, 0, 0.9);
+    
 
     display: flex;
     justify-content: center;
@@ -24,6 +20,11 @@
     gap: 20px;
 
     padding: 20px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .agenda-item-control:not([type = 'button']) {
@@ -41,7 +42,6 @@
 .agenda-item-control[type = 'button'] {
     width: 150px;
     height: 50px;
-    background-color: cadetblue;
     border: none;
     outline: none;
     color: white;
@@ -56,3 +56,38 @@
 .agenda-item-control[type = 'text']:disabled {
     background-color: #f6f6f6;
 }
+
+
+@media screen and (max-width: 500px) {
+    .modal-box {
+        width: 300px;
+        height: 300px;
+    }
+
+
+    .agenda-item-control:not([type = 'button']) {
+        width: 200px;
+    }
+}
+
+@media screen and (min-width: 501px) and (max-width: 800px) {
+    .modal-box {
+        width: 400px;
+        height: 400px;
+    }
+
+    .agenda-item-control:not([type = 'button']) {
+        width: 300px;
+    }
+}
+
+
+
+    @media screen and (max-width: 1150px) {
+        .modal-box {
+            top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+        }
+
+    }

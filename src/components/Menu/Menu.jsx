@@ -57,17 +57,12 @@ function Menu() {
             
             <Link className={getClassName('menu-item')} to="/month">
               <i className={getClassName('menu-item-icon fa-solid fa-calendar-days')}></i>
-              <span className={getClassName('menu-item-desc')}>Month</span>
+              <span className={getClassName('menu-item-desc')}>Calendar</span>
             </Link>
 
-            <Link className={getClassName('menu-item')} to="/week">
-              <i className={getClassName('menu-item-icon fa-regular fa-clock')}></i>
-              <span className={getClassName('menu-item-desc')}>Week</span>
-            </Link>
-
-            <Link className={getClassName('menu-item')} to="/agenda">
+            <Link className={getClassName('menu-item')} to="/appointments">
             <i className={getClassName('menu-item-icon fa-regular fa-calendar-check')}></i>
-              <span className={getClassName('menu-item-desc')}>Tabular</span>
+              <span className={getClassName('menu-item-desc')}>List</span>
             </Link>
         
 
@@ -87,7 +82,7 @@ function Menu() {
       </div>
     </div>
 
-    {showCollapsibleMenu ? <CollapsibleMenu /> : null}
+    {showCollapsibleMenu ? <CollapsibleMenu handleCollapsibleMenu={handleCollapsibleMenu}/> : null}
     
     </>
   );

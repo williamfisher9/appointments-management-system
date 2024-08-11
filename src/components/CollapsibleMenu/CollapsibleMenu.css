@@ -1,5 +1,5 @@
 .collapsible-menu {
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: auto;
     z-index: 9999;
@@ -11,6 +11,8 @@
     align-items: center;
     flex-direction: column;
 }
+
+
 
 .collapsible-menu-item {
     padding: 15px 0;

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import "./Month.css";
-import AgendaItemCreator from "../AgendaItemCreator/AgendaItemCreator";
+import "./Calendar.css";
 import MonthSelector from "../MonthSelector/MonthSelector";
 
 import { useTheme } from "../ThemeContext/ThemeContext";
 import { useSettingsContext } from "../SettingsContext/SettingsContext";
+import AppointmentCreator from "../AppointmentCreator/AppointmentCreator";
 
-function Month() {
+function Calendar() {
   const { theme } = useTheme();
 
   let [monthState, setMonthState] = useState({sessions: [], day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear(), 
@@ -192,7 +192,17 @@ function Month() {
             {nextMonthDates++}
             </div>);
 
-      } else if (new Date(monthState.year, monthState.month, i+1).getDay() === 0 || new Date(monthState.year, monthState.month, i+1).getDay() === 1){
+      } else if ((settings.weekends === '1' && new Date(monthState.year, monthState.month, i+1).getDay() === 0) || 
+      (settings.weekends === '1' && new Date(monthState.year, monthState.month, i+1).getDay() === 1) || 
+      (settings.weekends === '2' && new Date(monthState.year, monthState.month, i+1).getDay() === 6) || 
+      (settings.weekends === '2' && new Date(monthState.year, monthState.month, i+1).getDay() === 0) || 
+      (settings.weekends === '3' && new Date(monthState.year, monthState.month, i+1).getDay() === 6) || 
+      (settings.weekends === '4' && new Date(monthState.year, monthState.month, i+1).getDay() === 0) || 
+      (settings.weekends === '5' && new Date(monthState.year, monthState.month, i+1).getDay() === 1)){
+
+        if(settings.weekends === '1'){
+
+        }
 
         values.push(<div
             className={`disabled-calendar-item`}
@@ -210,7 +220,7 @@ function Month() {
             onClick={() => handleMonthItemClick(i)}
             style={theme === 'dark' ? {border: "1px solid #fff", color: "#fff"} : {border: "1px solid #000", color:"#000"}}
           >
-              {date.toLocaleDateString("en-US", options) === `${monthState.month + 1}/${i}/${monthState.year}` ? <><span style={{fontSize: "13px", fontWeight: "500"}}>Today</span><br /></> : null}
+              {date.toLocaleDateString("en-US", options) === `${monthState.month + 1}/${i}/${monthState.year}` ? <><span style={{fontSize: "10px", fontWeight: "500"}}>Today</span><br /></> : null}
             {i}
           </div>
         );
@@ -274,7 +284,7 @@ function Month() {
   }
 
   return (
-    <div className="month-container">
+    <div className="calendar-container">
       <div className="text-field-container">
         <input
           className="text-field"
@@ -315,12 +325,7 @@ function Month() {
             `${monthState.selectedDate.split("/")[0].padStart(2, '0')}/${monthState.selectedDate.split("/")[1].padStart(2, '0')}/${monthState.selectedDate.split("/")[2]}`
             
             }</span>
-          <input onClick={handleJumpToTodayClick} type="button" value={"Today"} style={{width: "70px", 
-            height: "35px", 
-            marginLeft: "10px", 
-            backgroundColor: "rgba(0, 107, 110, 1)", 
-            border: "none", color: "#fff",
-            outline: "none", borderRadius: "5px", cursor: "pointer", fontWeight: "600"}} />
+          <input className='move-to-today-btn' onClick={handleJumpToTodayClick} type="button" value={"Today"} />
         </span>
         {monthState.sessions}
       </div>
@@ -328,7 +333,7 @@ function Month() {
 
 
       {monthState.showModal ? (
-        <AgendaItemCreator
+        <AppointmentCreator
           showModal={monthState.showModal}
           hideModal={hideModal}
           dateValue={monthState.selectedDate}
@@ -348,4 +353,4 @@ function Month() {
   );
 }
 
-export default Month;
+export default Calendar;

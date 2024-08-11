@@ -4,28 +4,27 @@
     height: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.4);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: transparent;
 }
 
 .month-selector-box {
-    width: 600px;
-    height: 600px;
+    width: 500px;
+    height: 500px;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.9);
     display: grid;
     grid-template-columns: auto auto;
     border-radius: 20px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .month-name {
     font-size: 1.5rem;
     font-weight: 300;
     text-align: center;
-    color: #fff;
     cursor: pointer;
     align-content: center;
 }
@@ -34,3 +33,36 @@
     background-color: rgba(255, 255, 255, 0.6);
     border-radius: 20px;
 }
+
+@media screen and (max-width: 500px) {
+    .month-selector-box {
+        width: 300px;
+        height: 300px;
+    }
+
+    .month-name {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (min-width: 501px) and (max-width: 800px) {
+    .month-selector-box {
+        width: 400px;
+        height: 400px;
+    }
+
+    .month-name {
+        font-size: 1.3rem;
+    }
+}
+
+
+
+    @media screen and (max-width: 1150px) {
+        .month-selector-box {
+            top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+        }
+
+    }

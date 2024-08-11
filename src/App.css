@@ -2,7 +2,7 @@
 
 .app-container {
   width: 100svw;
-  height: 100svh;
+  height: auto;
   font-family: 'Roboto', sans-serif;
 }
 

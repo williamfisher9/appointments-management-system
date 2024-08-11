@@ -1,7 +1,7 @@
 .main-container {
     position: absolute;
-    width: calc(100svw - 80px);
-    height: 100%;
+    width: calc(100svw - 100px);
+    height: auto;
     top: 0;
     left: 80px;
 }
@@ -11,5 +11,6 @@
     .main-container {
         left: 0;
         width: 100%;
+        padding: 100px 0;
     }
 }
