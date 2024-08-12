@@ -5,10 +5,6 @@ const AppointmentsContext = createContext()
 export const AppointmentsProvider = ({children}) => {
     const [appointments, setAppointments] = useState([]);
 
-    useEffect(() => {
-        console.log(appointments)
-    }, [appointments])
-
     return <AppointmentsContext.Provider value={{appointments, setAppointments}}>
         {children}
     </AppointmentsContext.Provider>

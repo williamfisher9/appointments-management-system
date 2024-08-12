@@ -5,16 +5,22 @@ import MonthSelector from "../MonthSelector/MonthSelector";
 import { useTheme } from "../ThemeContext/ThemeContext";
 import { useSettingsContext } from "../SettingsContext/SettingsContext";
 import AppointmentCreator from "../AppointmentCreator/AppointmentCreator";
+import { useAppointmentsContext } from "../AppointmentsContext/AppointmentsContext";
 
 function Calendar() {
   const { theme } = useTheme();
 
+  const {appointments} = useAppointmentsContext();
+
   let [monthState, setMonthState] = useState({sessions: [], day: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear(), 
     showModal: false, selectedDate: new Date().toLocaleDateString(), showMonthSelector: false, selectedSession: ''});
 
+    let [sessions, setSessions] = useState([]);
+
     useEffect(() => {
-      setMonthState({...monthState, sessions: getAvailableSessions(new Date())})
-    }, []);
+      //setMonthState({...monthState, sessions: getAvailableSessions(new Date(monthState.year, monthState.month, monthState.day))})
+      setSessions(getAvailableSessions(new Date(monthState.year, monthState.month, monthState.day)));
+    }, [monthState]);
 
   let {settings} = useSettingsContext();
 
@@ -46,11 +52,11 @@ function Calendar() {
 
 
   let handleMonthItemClick = (val) => {
-    setMonthState({...monthState, day: val, selectedDate: new Date(monthState.year, monthState.month, val).toLocaleDateString(), sessions: getAvailableSessions(new Date(monthState.year, monthState.month, val))});
+    setMonthState({...monthState, day: val, selectedDate: new Date(monthState.year, monthState.month, val).toLocaleDateString()});
   };
 
   let hideModal = () => {
-    setMonthState({...monthState, showModal: false, sessions: getAvailableSessions(new Date(monthState.year, monthState.month, monthState.day))});
+    setMonthState({...monthState, showModal: false});
   };
 
   let hideMonthSelector = () => {
@@ -73,15 +79,33 @@ function Calendar() {
       if(lastSession === 1) {
         while(startTimeInMinutes <= endTimeInMinutes) {    
           let hourVal = `${parseInt(startTimeInMinutes/60).toString().padStart(2,'0')}:${(startTimeInMinutes%60).toString().padStart(2,'0')}`;  
-          val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} 
-          
-          key={i++} className="session-item">{hourVal}</span>);
+          let exists = false;
+              for(let j = 0; j < appointments.length; j++){
+
+                if(appointments[j].date === dateVal.toLocaleDateString() && appointments[j].session === hourVal){
+                  exists = true;
+                  break;
+                } 
+              }
+
+              if(!exists) {
+                val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+              }
           startTimeInMinutes += 60;
         }
-      } else {
+      } }
+      
+      
+      /*else {
         while(startTimeInMinutes < endTimeInMinutes) {
           let hourVal = `${parseInt(startTimeInMinutes/60).toString().padStart(2,'0')}:${(startTimeInMinutes%60).toString().padStart(2,'0')}`;
-          val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+          //val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+          for(let i = 0; i < appointments.length; i++){
+            if(appointments[i].date === dateVal.toLocaleDateString() && appointments[i].session === hourVal){
+            } else {
+              val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+            }
+          }
           startTimeInMinutes += 60;
         }
       }
@@ -91,17 +115,29 @@ function Calendar() {
       if(lastSession === 1) {
         while(startTimeInMinutes <= endTimeInMinutes) {
           let hourVal = `${parseInt(startTimeInMinutes/60).toString().padStart(2,'0')}:${(startTimeInMinutes%60).toString().padStart(2,'0')}`;
-          val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+          //val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+          for(let i = 0; i < appointments.length; i++){
+            if(appointments[i].date === dateVal.toLocaleDateString() && appointments[i].session === hourVal){
+            } else {
+              val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+            }
+          }
           startTimeInMinutes += 30;
         }
       } else {
         while(startTimeInMinutes < endTimeInMinutes) {
           let hourVal = `${parseInt(startTimeInMinutes/60).toString().padStart(2,'0')}:${(startTimeInMinutes%60).toString().padStart(2,'0')}`;
-          val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+          //val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+          for(let i = 0; i < appointments.length; i++){
+            if(appointments[i].date === dateVal.toLocaleDateString() && appointments[i].session === hourVal){
+            } else {
+              val.push(<span onClick={() => handleBookSessionClick(hourVal, dateVal)} key={i++} className="session-item">{hourVal}</span>);
+            }
+          }
           startTimeInMinutes += 30;
         }
       }
-    }
+    }*/
 
     return val;
   }
@@ -279,8 +315,7 @@ function Calendar() {
     setMonthState({...monthState, year: new Date().getFullYear(), 
       month: new Date().getMonth(), 
       day: new Date().getDate(), 
-      selectedDate: new Date().toLocaleDateString(),
-      sessions: getAvailableSessions(new Date())})
+      selectedDate: new Date().toLocaleDateString()})
   }
 
   return (
@@ -314,21 +349,22 @@ function Calendar() {
       </div>     
       
       <div className="grid-components">
-      <div className="calendar-grid" style={theme === 'dark' ? {border: "1px solid #fff", color: "#fff"} : {border: "1px solid #000", color:"#000"}}>
-        {buildCalendarItems()}
-      </div>
 
-      <div className="sessions-grid" style={theme === 'dark' ? {border: "1px solid #fff", color: "#fff"} : {border: "1px solid #000", color:"#000"}}>
-      <span className="selected-date-field selected-date-text-field" style={theme === 'dark' ? {color: "#fff"} : {color:"#000"}}>
-          AVAILABLE SESSIONS <span style={{color: "rgba(238, 171, 0, 1)", fontWeight: "600", textDecoration: "underline"}}>{
-            
-            `${monthState.selectedDate.split("/")[0].padStart(2, '0')}/${monthState.selectedDate.split("/")[1].padStart(2, '0')}/${monthState.selectedDate.split("/")[2]}`
-            
-            }</span>
-          <input className='move-to-today-btn' onClick={handleJumpToTodayClick} type="button" value={"Today"} />
-        </span>
-        {monthState.sessions}
-      </div>
+          <div className="calendar-grid" style={theme === 'dark' ? {border: "1px solid #fff", color: "#fff"} : {border: "1px solid #000", color:"#000"}}>
+            {buildCalendarItems()}
+          </div>
+
+          <div className="sessions-grid" style={theme === 'dark' ? {border: "1px solid #fff", color: "#fff"} : {border: "1px solid #000", color:"#000"}}>
+          <span className="selected-date-field selected-date-text-field" style={theme === 'dark' ? {color: "#fff"} : {color:"#000"}}>
+              AVAILABLE SESSIONS <span style={{color: "rgba(238, 171, 0, 1)", fontWeight: "600", textDecoration: "underline"}}>{
+                
+                `${monthState.selectedDate.split("/")[0].padStart(2, '0')}/${monthState.selectedDate.split("/")[1].padStart(2, '0')}/${monthState.selectedDate.split("/")[2]}`
+                
+                }</span>
+              <input className='move-to-today-btn' onClick={handleJumpToTodayClick} type="button" value={"Today"} />
+            </span>
+            {sessions}
+          </div>
       </div>
 
 
