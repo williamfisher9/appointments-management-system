@@ -1,18 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppointmentsContext } from "../AppointmentsContext/AppointmentsContext";
 import { useTheme } from "../ThemeContext/ThemeContext";
 import './Appointment.css'
 import { useSearchContext } from "../SearchContext/SearchContext";
+import CopyModal from "../CopyModal/CopyModal";
+import '../CopyModal/CopyModal.css'
 
 function Appintment(){
     let { appointments, setAppointments } = useAppointmentsContext();
     let { searchAppointments, setSearchAppointments } = useSearchContext();
 
+
+    const [copyModalOpen, setCopyModalOpen] = useState({open: false, name: '', date: '', session: '', description: '', phone: '', uuid: ''});
+
+
     let {theme} = useTheme();
 
     useEffect(() => {
       setSearchAppointments(appointments);
-    }, [appointments])
+    }, [appointments]);
+
+    let handleCopyAppointment = (uuid, name, phone, date, session, description) => {
+      setCopyModalOpen({...copyModalOpen, open: true, uuid, name, phone, date, session, description});
+    }
     
     let handleDeleteAppointment = (itemId) => {``
       let newAppointments = [];
@@ -65,7 +75,7 @@ function Appintment(){
                 <td>{element.description}</td>
                 <td>
                   <i className="action-icon fa-regular fa-trash-can" onClick={() => handleDeleteAppointment(element.uuid)} title="Delete"></i>
-                  <i className="action-icon fa-regular fa-copy" onClick={() => handleDeleteAppointment(element.uuid)} title="Copy"></i>
+                  <i className="action-icon fa-regular fa-copy" onClick={() => handleCopyAppointment(element.uuid, element.name, element.phone, element.date, element.session, element.description, element.uuid)} title="Copy"></i>
                   <i className="action-icon fa-regular fa-pen-to-square" onClick={() => handleDeleteAppointment(element.uuid)} title="Edit"></i>
                 </td>
                 </tr>
@@ -85,13 +95,22 @@ function Appintment(){
                     <p>{element.description}</p>
                     <div>
                     <i className="action-icon fa-regular fa-trash-can" onClick={() => handleDeleteAppointment(element.uuid)} title="Delete"></i>
-                  <i className="action-icon fa-regular fa-copy" onClick={() => handleCopyAppointment(element.uuid)} title="Copy"></i>
+                  <i className="action-icon fa-regular fa-copy" onClick={() => handleCopyAppointment(element.uuid, element.name, element.phone, element.date, element.session, element.description, element.uuid)} title="Copy"></i>
                   <i className="action-icon fa-regular fa-pen-to-square" onClick={() => handleEditAppointment(element.uuid)} title="Edit"></i>
                     </div>
                   </div>
               })
             }
           </div>
+            {copyModalOpen.open && (
+              <CopyModal name={copyModalOpen.name} 
+              session={copyModalOpen.session} 
+              date={copyModalOpen.date} 
+              description={copyModalOpen.description} 
+              phone={copyModalOpen.phone} 
+              uuid={copyModalOpen.uuid}
+              onClose={() => setCopyModalOpen({...copyModalOpen, open: false, name: '', phone:'', session: '', date: '', description: '', uuid: ''})} />
+              )}
     </div>
 }
 

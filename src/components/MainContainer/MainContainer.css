@@ -2,6 +2,7 @@
     position: absolute;
     width: calc(100svw - 100px);
     height: auto;
+    min-height: 100svh;
     top: 0;
     left: 80px;
 }

@@ -1,0 +1,96 @@
+.sessions-grid {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 70px 70px 70px 70px 70px 70px 70px;
+    grid-template-rows: 70px 70px 70px 70px 70px 70px 70px;
+    grid-gap: 3px;
+}
+
+.session-item {
+    background-color: rgba(238, 171, 0, 0.8);
+    border-radius: 5px;
+    align-content: center;
+    text-align: center;
+}
+
+.session-item:hover {
+    cursor: pointer;
+    background-color: rgba(238, 171, 0, 1);
+    border: 2px solid #fff;
+    font-weight: 700;
+}
+
+.selected-date-field {
+    grid-column-start: 1;
+    grid-column-end: 8;
+    text-align: center;
+}
+
+.selected-date-text-field {
+    font-size: 1.5rem;
+}
+
+.move-to-today-btn {
+    width: 70px;
+    height: 35px;
+    margin-left: 10px;
+    background-color: rgba(0, 107, 110, 1);
+    color: #fff;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+
+
+
+
+@media only screen and (min-width: 400px) and (max-width: 650px) {
+    .selected-date-text-field {
+        font-size: 0.8rem;
+    }
+
+    .move-to-today-btn {
+        width: 50px;
+        height: 30px;
+        font-size: 0.7rem;
+    }
+
+    .session-item {
+        font-size: 0.7rem;
+    }
+
+    
+
+    .sessions-grid {
+        grid-template-columns: 40px 40px 40px 40px 40px 40px 40px;
+        grid-template-rows: 40px 40px 40px 40px 40px 40px 40px;
+    }
+
+}
+
+@media only screen and (max-width: 400px) {
+
+    .selected-date-text-field {
+        font-size: 0.6rem;
+    }
+
+    .move-to-today-btn {
+        width: 40px;
+        height: 25px;
+        font-size: 0.6rem;
+    }
+
+    .session-item {
+        font-size: 0.6rem;
+    }
+
+    
+
+    .sessions-grid {
+        grid-template-columns: 30px 30px 30px 30px 30px 30px 30px;
+        grid-template-rows: 30px 30px 30px 30px 30px 30px 30px;
+    }
+}

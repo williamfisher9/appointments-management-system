@@ -1,10 +1,14 @@
 .month-selector-container {
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
     position: absolute;
-    width: 100%;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     top: 0;
     left: 0;
-    background-color: transparent;
+    right: 0;
+    bottom: 0;
 }
 
 .month-selector-box {
@@ -14,11 +18,6 @@
     display: grid;
     grid-template-columns: auto auto;
     border-radius: 20px;
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .month-name {
@@ -55,14 +54,3 @@
         font-size: 1.3rem;
     }
 }
-
-
-
-    @media screen and (max-width: 1150px) {
-        .month-selector-box {
-            top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-        }
-
-    }

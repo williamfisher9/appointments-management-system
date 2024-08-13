@@ -1,0 +1,103 @@
+.calendar-grid {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 70px 70px 70px 70px 70px 70px 70px;
+    grid-template-rows: 70px 70px 70px 70px 70px 70px 70px;
+    grid-gap: 3px;
+}
+
+.calendar-item {
+    align-content: center;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.week-day-name {
+    background-color: rgba(238, 171, 0, 1);
+    pointer-events: none;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    -webkit-text-stroke-color: #fff;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-fill-color: transparent;
+}
+
+.disabled-calendar-item {
+    align-content: center;
+    text-align: center;
+    border: 1px solid #808080;
+    color: #808080;
+    border-radius: 5px;
+}
+
+.calendar-item {
+    align-content: center;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.calendar-item:hover:not(.week-day-name, .current-calendar-item) {
+    cursor: pointer;
+    background-color: rgba(0, 208, 107, 0.2);
+}
+
+.calendar-item:hover:not(.week-day-name) {
+    box-shadow: 4px 4px 15px #239700, -4px -4px 15px #239700;
+}
+
+.current-calendar-item {
+    cursor: pointer;
+    background-color: rgba(0, 107, 110, 1);
+    color: #fff !important;
+}
+
+@media only screen and (min-width: 550px) {
+    .calendar-container {
+        padding: 10px 0;
+    }
+}
+
+@media only screen and (min-width: 400px) and (max-width: 650px) {
+    .current-calendar-item {
+        font-size: 0.8rem;
+    }
+
+    .calendar-grid {
+        grid-template-columns: 40px 40px 40px 40px 40px 40px 40px;
+        grid-template-rows: 40px 40px 40px 40px 40px 40px 40px;
+    }
+
+    .week-day-name {
+        font-size: 14px;
+    }
+
+}
+
+@media only screen and (max-width: 400px) {
+    .current-calendar-item {
+        font-size: 0.6rem;
+    }
+
+    .week-day-name {
+        font-size: 10px;
+    }
+
+    .calendar-grid {
+        grid-template-columns: 30px 30px 30px 30px 30px 30px 30px;
+        grid-template-rows: 30px 30px 30px 30px 30px 30px 30px;
+    }
+
+}
+
+.small.current-calendar-item {
+    font-size: 0.6rem;
+}
+
+.small.week-day-name {
+    font-size: 10px;
+}
+
+.small.calendar-grid {
+    grid-template-columns: 30px 30px 30px 30px 30px 30px 30px;
+    grid-template-rows: 30px 30px 30px 30px 30px 30px 30px;
+}

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./AppointmentCreator.css";
 import { useAppointmentsContext } from "../AppointmentsContext/AppointmentsContext";
 import { useTheme } from "../ThemeContext/ThemeContext";
+import useOnClickOutside from "../CustomHooks/CustomHooks";
 
 function AppointmentCreator(props) {
   let [appointment, setAppointment] = useState({});
@@ -12,11 +13,9 @@ function AppointmentCreator(props) {
 
   let { theme } = useTheme();
 
-  let handleModalContainerClick = (event) => {
-    if (event.target.id === "modalContainer") {
-      props.hideModal();
-    }
-  };
+  let modalRef = useRef();
+
+  useOnClickOutside(modalRef, props.hideModal)
 
   let checkIfAppointmentExists = (date, session) => {
     for (let i = 0; i < appointments.length; i++) {
@@ -57,12 +56,10 @@ function AppointmentCreator(props) {
   return props.showModal ? (
     <div
       className="modal-container"
-      onClick={handleModalContainerClick}
-      id="modalContainer"
     >
       <div
         className="modal-box"
-        id="modalBox"
+        ref={modalRef}
         style={
           theme === "dark"
             ? {
@@ -130,11 +127,11 @@ function AppointmentCreator(props) {
           />
         </div>
 
-        {showError ? (
+        {showError && (
           <p style={{ color: "red" }}>
             Session Reserved! Choose another time slot.
           </p>
-        ) : null}
+        )}
       </div>
     </div>
   ) : null;
