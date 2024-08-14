@@ -11,6 +11,7 @@ function SessionsGrid({
   dayIn,
   handleJumpToTodayClick,
   handleBookSessionClick,
+  size
 }) {
   let { theme } = useTheme();
   let { settings } = useSettingsContext();
@@ -117,14 +118,14 @@ function SessionsGrid({
 
   return (
     <div
-      className="sessions-grid"
+      className={`sessions-grid ${size === 'small' && 'small'}`}
       style={
         theme === "dark"
           ? { border: "1px solid #fff", color: "#fff" }
           : { border: "1px solid #000", color: "#000" }
       }
     >
-      <span
+      {size !== 'small' && <span
         className="selected-date-field selected-date-text-field"
         style={theme === "dark" ? { color: "#fff" } : { color: "#000" }}
       >
@@ -144,7 +145,8 @@ function SessionsGrid({
           type="button"
           value={"Today"}
         />
-      </span>
+      </span>}
+      
       {sessions}
     </div>
   );

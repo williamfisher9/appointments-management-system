@@ -150,8 +150,8 @@ function CalendarGrid({monthIn, yearIn, dayIn, selectedDateIn, handleMonthItemCl
     className={`calendar-grid ${size === 'small' && 'small'}`}
     style={
       theme === "dark"
-        ? { border: "1px solid #fff", color: "#fff" }
-        : { border: "1px solid #000", color: "#000" }
+        ? { border: "1px solid #fff", color: "#fff", backgroundColor: "#000" }
+        : { border: "1px solid #000", color: "#000", backgroundColor: "rgba(238, 171, 0, 1)" }
     }
   >
     {buildCalendarItems()}

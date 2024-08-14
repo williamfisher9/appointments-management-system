@@ -94,3 +94,23 @@
         grid-template-rows: 30px 30px 30px 30px 30px 30px 30px;
     }
 }
+
+
+
+
+
+.small.session-item {
+    background-color: rgba(238, 171, 0, 0.8);
+    border-radius: 5px;
+    align-content: center;
+    text-align: center;
+    font-size: 0.4rem;
+}
+
+.small.sessions-grid {
+    padding: 10px;
+    display: grid;
+    grid-gap: 3px;
+    grid-template-columns: 50px 50px 50px 50px 50px 50px 50px;
+    grid-template-rows: 25px 25px 25px 25px 25px 25px 25px;
+}

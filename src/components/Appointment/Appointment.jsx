@@ -5,6 +5,7 @@ import './Appointment.css'
 import { useSearchContext } from "../SearchContext/SearchContext";
 import CopyModal from "../CopyModal/CopyModal";
 import '../CopyModal/CopyModal.css'
+import EditAppointmentModal from "../EditAppointmentModal/EditAppointmentModal";
 
 function Appintment(){
     let { appointments, setAppointments } = useAppointmentsContext();
@@ -12,6 +13,8 @@ function Appintment(){
 
 
     const [copyModalOpen, setCopyModalOpen] = useState({open: false, name: '', date: '', session: '', description: '', phone: '', uuid: ''});
+
+    const [editModalOpen, setEditModalOpen] = useState({open: false, name: '', date: '', session: '', description: '', phone: '', uuid: ''});
 
 
     let {theme} = useTheme();
@@ -22,6 +25,10 @@ function Appintment(){
 
     let handleCopyAppointment = (uuid, name, phone, date, session, description) => {
       setCopyModalOpen({...copyModalOpen, open: true, uuid, name, phone, date, session, description});
+    }
+
+    let handleEditAppointment = (uuid, name, phone, date, session, description) => {
+      setEditModalOpen({...editModalOpen, open: true, uuid, name, phone, date, session, description});
     }
     
     let handleDeleteAppointment = (itemId) => {``
@@ -76,7 +83,9 @@ function Appintment(){
                 <td>
                   <i className="action-icon fa-regular fa-trash-can" onClick={() => handleDeleteAppointment(element.uuid)} title="Delete"></i>
                   <i className="action-icon fa-regular fa-copy" onClick={() => handleCopyAppointment(element.uuid, element.name, element.phone, element.date, element.session, element.description, element.uuid)} title="Copy"></i>
-                  <i className="action-icon fa-regular fa-pen-to-square" onClick={() => handleDeleteAppointment(element.uuid)} title="Edit"></i>
+                  <i className="action-icon fa-regular fa-pen-to-square" 
+                  onClick={() => handleEditAppointment(element.uuid, element.name, element.phone, element.date, element.session, element.description, element.uuid)}
+                   title="Edit"></i>
                 </td>
                 </tr>
               })
@@ -96,7 +105,9 @@ function Appintment(){
                     <div>
                     <i className="action-icon fa-regular fa-trash-can" onClick={() => handleDeleteAppointment(element.uuid)} title="Delete"></i>
                   <i className="action-icon fa-regular fa-copy" onClick={() => handleCopyAppointment(element.uuid, element.name, element.phone, element.date, element.session, element.description, element.uuid)} title="Copy"></i>
-                  <i className="action-icon fa-regular fa-pen-to-square" onClick={() => handleEditAppointment(element.uuid)} title="Edit"></i>
+                  <i className="action-icon fa-regular fa-pen-to-square" 
+                  onClick={() => handleEditAppointment(element.uuid, element.name, element.phone, element.date, element.session, element.description, element.uuid)}
+                   title="Edit"></i>
                     </div>
                   </div>
               })
@@ -110,6 +121,16 @@ function Appintment(){
               phone={copyModalOpen.phone} 
               uuid={copyModalOpen.uuid}
               onClose={() => setCopyModalOpen({...copyModalOpen, open: false, name: '', phone:'', session: '', date: '', description: '', uuid: ''})} />
+              )}
+
+{editModalOpen.open && (
+              <EditAppointmentModal name={editModalOpen.name} 
+              session={editModalOpen.session} 
+              date={editModalOpen.date} 
+              description={editModalOpen.description} 
+              phone={editModalOpen.phone} 
+              uuid={editModalOpen.uuid}
+              onClose={() => setEditModalOpen({...editModalOpen, open: false, name: '', phone:'', session: '', date: '', description: '', uuid: ''})} />
               )}
     </div>
 }
