@@ -14,6 +14,7 @@ function EditAppointmentModal({ uuid, name, phone, session, date, description, o
   let [newPhone, setNewPhone] = useState(phone);
   
   let modalRef = useRef();
+
   useOnClickOutside(modalRef, onClose);
 
   let {appointments, setAppointments} = useAppointmentsContext();
@@ -29,15 +30,30 @@ function EditAppointmentModal({ uuid, name, phone, session, date, description, o
   
     setAppointments([...newAppointments, {uuid, name: newName, phone: newPhone, session: newSession, description: newDescription, date: newDate}]);
 
-    onClose();}
+    onClose();
+  
+  }
   
 
+    const calendarDivRef = useRef()
+    const sessionsDivRef = useRef();
+
     let handleShowCalendarClick = () => {
-      document.querySelector('.copy-modal-calendar').classList.toggle('show-copy-modal-calendar');
+      if(calendarDivRef.current.classList.contains('show-copy-modal-calendar')){
+        calendarDivRef.current.classList.remove('show-copy-modal-calendar');
+      } else {
+        calendarDivRef.current.classList.add('show-copy-modal-calendar');
+        sessionsDivRef.current.classList.remove('show-sessions-div');
+      }
     }
 
     let handleShowAvailableSessions = () => {
-      document.querySelector('.sessions-div').classList.toggle('show-sessions-div');
+      if(sessionsDivRef.current.classList.contains('show-sessions-div')){
+        sessionsDivRef.current.classList.remove('show-sessions-div');
+      } else {
+        sessionsDivRef.current.classList.add('show-sessions-div');
+        calendarDivRef.current.classList.remove('show-copy-modal-calendar');
+      }
     }
 
     let handleDateChange = (event) => {
@@ -62,7 +78,7 @@ function EditAppointmentModal({ uuid, name, phone, session, date, description, o
           <div className='copy-modal-date-field'>
             <input className='copy-modal-control' type='text' value={newDate} onClick={handleShowCalendarClick} onChange={() => {selectedDateIn = newDate}}/>
 
-            <div className='copy-modal-calendar'>
+            <div className='copy-modal-calendar' ref={calendarDivRef}>
             <CalendarGrid
               selectedDateIn={newDate}
               yearIn={new Date(date).getFullYear()}
@@ -75,7 +91,7 @@ function EditAppointmentModal({ uuid, name, phone, session, date, description, o
           </div>
           <div className='available-sessions-div'>
             <input className='copy-modal-control' type='text' value={newSession} onClick={handleShowAvailableSessions} onChange={() => {}}/>
-            <div className="sessions-div">
+            <div className="sessions-div" ref={sessionsDivRef}>
               <SessionsGrid
                 selectedDateIn={newDate != '' ? newDate : date}
                 yearIn={new Date(date).getFullYear()}

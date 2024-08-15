@@ -7,12 +7,11 @@ import SessionsGrid from '../SessionsGrid/SessionsGrid';
 
 function CopyModal({ uuid, name, phone, session, date, description, onClose }) { 
   
-  let [newDate, setNewDate] = useState('');
-  let [newTextArea, setNewTextArea] = useState('');
+  let [newDate, setNewDate] = useState(date);
+  let [newDescription, setNewDescription] = useState(description);
+  let [newSession, setNewSession] = useState(session);
 
-  let [showError, setShowError] = useState(false);
-
-  let [newSession, setNewSession] = useState('');
+  let [showError, setShowError] = useState({show: false, message: ''});
   
     let modalRef = useRef();
 
@@ -21,20 +20,53 @@ function CopyModal({ uuid, name, phone, session, date, description, onClose }) {
     useOnClickOutside(modalRef, onClose);
 
     let handleCopyButton = () => {
-      if(newDate === '' || newSession === '')
-        setShowError(true)
-      else
-        {setAppointments([...appointments, {uuid: crypto.randomUUID(), name, phone, session: newSession != null ? newSession : session, date: newDate != null ? newDate : date, description: newTextArea != '' ? newTextArea : description}]);
-      
-        onClose();}
-    }
+      if (date === newDate && session === newSession) {
+        setShowError({ show: true, message: "Session exists." });
+        return;
+      }
+
+      if (newDate === "" || newSession === "") {
+        setShowError({
+          show: true,
+          message: "Date and session fields required.",
+        });
+        return;
+      }
+
+      setAppointments([
+        ...appointments,
+        {
+          uuid: crypto.randomUUID(),
+          name,
+          phone,
+          session: newSession,
+          date: newDate,
+          description: newDescription,
+        },
+      ]);
+
+      onClose();
+    };
+
+    const calendarDivRef = useRef()
+    const sessionsDivRef = useRef();
 
     let handleShowCalendarClick = () => {
-      document.querySelector('.copy-modal-calendar').classList.toggle('show-copy-modal-calendar');
+      if(calendarDivRef.current.classList.contains('show-copy-modal-calendar')){
+        calendarDivRef.current.classList.remove('show-copy-modal-calendar');
+      } else {
+        calendarDivRef.current.classList.add('show-copy-modal-calendar');
+        sessionsDivRef.current.classList.remove('show-sessions-div');
+      }
     }
 
     let handleShowAvailableSessions = () => {
-      document.querySelector('.sessions-div').classList.toggle('show-sessions-div');
+      if(sessionsDivRef.current.classList.contains('show-sessions-div')){
+        sessionsDivRef.current.classList.remove('show-sessions-div');
+      } else {
+        sessionsDivRef.current.classList.add('show-sessions-div');
+        calendarDivRef.current.classList.remove('show-copy-modal-calendar');
+      }
     }
 
     let handleMonthItemClick = (event) => {
@@ -42,8 +74,8 @@ function CopyModal({ uuid, name, phone, session, date, description, onClose }) {
       document.querySelector('.copy-modal-calendar').classList.toggle('show-copy-modal-calendar');
     }
 
-    let handleTextAreaChange = (event) => {
-      setNewTextArea(event.target.value);
+    let handleDescriptionChange = (event) => {
+      setNewDescription(event.target.value);
     }
 
     let handleBookSessionClick = (hour, dateVal) => {
@@ -60,23 +92,27 @@ function CopyModal({ uuid, name, phone, session, date, description, onClose }) {
         <div className='copy-modal-box' ref={modalRef} onClick={handleContainerClick}>
           <input className='copy-modal-control disabled-copy-modal-control' type='text' value={name} disabled/>
           <input className='copy-modal-control disabled-copy-modal-control' type='text' value={phone}  disabled/>
-          <div className='copy-modal-date-field'>
-            <input className='copy-modal-control' type='text' value={newDate != '' ? newDate : date} onClick={handleShowCalendarClick} onChange={() => {selectedDateIn = newDate}}/>
 
-            <div className='copy-modal-calendar'>
-            <CalendarGrid
-              selectedDateIn={newDate != '' ? newDate : date}
-              yearIn={new Date(date).getFullYear()}
-              monthIn={new Date(date).getMonth()}
-              dayIn={new Date(date).getDate()}
-              handleMonthItemClick={handleMonthItemClick}
-              size='small'
-            />
+          <div className='copy-modal-date-field'>
+
+            <input className='copy-modal-control' type='text' value={newDate} 
+            onClick={handleShowCalendarClick} onChange={() => {}}/>
+
+            <div className='copy-modal-calendar' ref={calendarDivRef}>
+              <CalendarGrid
+                selectedDateIn={newDate}
+                yearIn={new Date(date).getFullYear()}
+                monthIn={new Date(date).getMonth()}
+                dayIn={new Date(date).getDate()}
+                handleMonthItemClick={handleMonthItemClick}
+                size='small'
+              />
             </div>
+
           </div>
           <div className='available-sessions-div'>
-            <input className='copy-modal-control' type='text' value={newSession != '' ? newSession : session} onClick={handleShowAvailableSessions}/>
-            <div className="sessions-div">
+            <input className='copy-modal-control' type='text' value={newSession} onClick={handleShowAvailableSessions}/>
+            <div className="sessions-div" ref={sessionsDivRef}>
               <SessionsGrid
                 selectedDateIn={newDate != '' ? newDate : date}
                 yearIn={new Date(date).getFullYear()}
@@ -87,17 +123,16 @@ function CopyModal({ uuid, name, phone, session, date, description, onClose }) {
               />
             </div>
           </div>
-          <input className='copy-modal-control' type='textarea' value={newTextArea != '' ? newTextArea : description}  onChange={handleTextAreaChange}/>
+          <input className='copy-modal-control' type='textarea' value={newDescription} onChange={handleDescriptionChange}/>
 
           <div className='buttons'>
           <input type='button' className='btn' value='COPY' onClick={handleCopyButton}/>
           <input type='button' className='btn' value='CANCEL' onClick={onClose}/>
           </div>
-          {showError && <p style={{color: "red"}}>The same session exists!</p>}
-        </div>
 
-
+          {showError.show && <p style={{color: "red"}}>{showError.message}</p>}
         
+        </div>
       </div>
     )
   }

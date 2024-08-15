@@ -101,3 +101,7 @@
     grid-template-columns: 30px 30px 30px 30px 30px 30px 30px;
     grid-template-rows: 30px 30px 30px 30px 30px 30px 30px;
 }
+
+.small.calendar-item {
+    font-size: 0.7rem;
+}

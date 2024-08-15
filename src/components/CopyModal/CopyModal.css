@@ -65,12 +65,15 @@
     top: 40px;
     left: 0;
     background-color: rgb(0, 0, 0);
-    display: none;
     z-index: 9999;
 }
 
 .show-copy-modal-calendar {
     display: block;
+}
+
+.hide-copy-modal-calendar {
+    display: none;
 }
 
 .disabled-copy-modal-control {
